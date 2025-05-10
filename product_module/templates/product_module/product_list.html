@@ -9,8 +9,16 @@
     <h1>Product List</h1>
     <ul>
         {% for product in products %}
-            <li><a href="{% url 'product_detail' product.id %}">{{ product.name }}</a></li>
+            <li>{{ product.name }} -
+                <a href="{% url 'product_detail' product.id %}">View</a> |
+                <a href="{% url 'product_update' product.id %}">Edit</a> |
+                <a href="{% url 'product_delete' product.id %}">Delete</a>
+            </li>
         {% endfor %}
     </ul>
+
+    {% if perms.product_module.add_product %}
+        <a href="{% url 'product_create' %}">Add Product</a>
+    {% endif %}
 </body>
 </html>
