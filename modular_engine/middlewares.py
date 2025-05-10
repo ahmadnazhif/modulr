@@ -7,7 +7,7 @@ class ModuleInstallMiddleware:
 
     def __call__(self, request):
         slug = self._extract_module_slug(request.path)
-        if not(slug and self._is_module_installed(slug)):
+        if slug and not self._is_module_installed(slug):
             raise Http404(f"Module '{slug}' is not installed.")
         
         response = self.get_response(request)
