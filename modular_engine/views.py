@@ -1,3 +1,6 @@
 from django.shortcuts import render
+from .models import Module
 
-# Create your views here.
+def module_list(request):
+    modules = Module.objects.all()
+    return render(request, 'modular_engine/module_list.html', {'modules': modules})
