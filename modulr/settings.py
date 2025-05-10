@@ -49,6 +49,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    'modular_engine.middlewares.ModuleInstallMiddleware',  # Middleware untuk memeriksa modul
 ]
 
 ROOT_URLCONF = 'modulr.urls'
