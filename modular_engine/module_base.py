@@ -1,7 +1,9 @@
 from abc import ABC, abstractmethod
+from django.apps import apps
 from django.core.management import call_command
 from django.utils import timezone
 from modular_engine.models import Module
+from modular_engine.utils.safe_factory import get_safe_model, remove_safe_model
 
 class BaseModuleInstaller(ABC):
     @property
@@ -46,7 +48,16 @@ class BaseModuleInstaller(ABC):
         if not chosen_module.is_installed:
             return
 
+        if not chosen_module.needs_upgrade:
+            return
+
         call_command("migrate", chosen_module.name)
+
+        all_models = apps.get_app_config(chosen_module.name).get_models()
+
+        for model in all_models:
+            remove_safe_model(model)
+
         current_time = timezone.now()
         chosen_module.upgraded_at = current_time
         chosen_module.save()

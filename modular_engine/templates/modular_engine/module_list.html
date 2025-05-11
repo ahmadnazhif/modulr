@@ -8,6 +8,9 @@
         <li>
             {% if module.is_installed %}
             <a href="{% url template_list %}">{{ module.name }}</a> - <a href="{% url 'module_uninstall' module.slug %}">Uninstall</a>
+                {% if module.needs_upgrade %}
+                - <a href="{% url 'module_upgrade' module.slug %}">Upgrade</a>
+                {% endif %}
             {% else %}
             {{ module.name }} - <a href="{% url 'module_install' module.slug %}">Install</a>
             {% endif %}

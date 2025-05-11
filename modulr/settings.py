@@ -113,6 +113,7 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
+TIME_ZONE = 'UTC'
 
 
 # Static files (CSS, JavaScript, Images)
