@@ -7,7 +7,8 @@ class ModuleInstallMiddleware:
 
     def __call__(self, request):
         slug = self._extract_module_slug(request.path)
-        if slug and not self._is_module_installed(slug):
+        module = self._get_module(slug) if slug else None
+        if module and not module.is_installed:
             raise Http404(f"Module '{slug}' is not installed.")
         
         response = self.get_response(request)
@@ -20,12 +21,14 @@ class ModuleInstallMiddleware:
         path_parts = path.split('/')
         if len(path_parts) < 3 or path_parts[1] != 'module':
             return None
-        
-        return path_parts[2]
 
-    def _is_module_installed(self, slug):
+        if path_parts[2] != 'upgrade':
+            return path_parts[2]
+
+        return path_parts[3] if len(path_parts) > 3 else None
+
+    def _get_module(self, slug):
         try:
-            module = Module.objects.get(slug=slug)
-            return module.is_installed
+            return Module.objects.get(slug=slug)
         except Module.DoesNotExist:
-            return False
+            return None

@@ -1,10 +1,9 @@
 from abc import ABC, abstractmethod
-from datetime import timezone
 from django.core.management import call_command
-
+from django.utils import timezone
 from modular_engine.models import Module
 
-class BaseModuleInstaller:
+class BaseModuleInstaller(ABC):
     @property
     @abstractmethod
     def module_name(self):
@@ -18,12 +17,10 @@ class BaseModuleInstaller:
         pass
 
     def _get_module(self) -> Module:
-        return Module.objects.get_or_create(
+        return Module.objects.get(
             name=self.module_name,
-            defaults={
-                "slug":  self.module_slug,
-            }
-        )[0]
+            slug=self.module_slug
+        )
 
     def install(self):
         chosen_module = self._get_module()

@@ -5,6 +5,8 @@ from django.http import Http404, HttpResponse
 from modular_engine.module_runner import run_module_action
 from .models import Module
 from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib import messages
+from django.shortcuts import redirect
 
 
 def module_list(request):
@@ -12,34 +14,36 @@ def module_list(request):
     return render(request, 'modular_engine/module_list.html', {'modules': modules})
 
 @login_required
-def module_install(request, module_name):
+def module_install(request, slug):
     try:
-        module = Module.objects.get(name=module_name)
+        module = Module.objects.get(slug=slug)
         if not module.is_installed:
-            run_module_action(module_name, 'install')
-            return HttpResponse(f"Module {module_name} installed successfully.")
-        return HttpResponse(f"Module {module_name} is already installed.")
+            run_module_action(module.name, 'install')
+            messages.add_message(request, messages.SUCCESS, f"Module {slug} installed successfully.")
+            return redirect('module_list')
+        return HttpResponse(f"Module {slug} is already installed.")
     except Module.DoesNotExist:
         raise Http404("Module does not exist.")
 
 @login_required
-def module_uninstall(request, module_name):
+def module_uninstall(request, slug):
     try:
-        module = Module.objects.get(name=module_name)
+        module = Module.objects.get(slug=slug)
         if module.is_installed:
-            run_module_action(module_name, 'uninstall')
-            return HttpResponse(f"Module {module_name} uninstalled successfully.")
-        return HttpResponse(f"Module {module_name} is not installed.")
+            run_module_action(module.name, 'uninstall')
+            messages.add_message(request, messages.SUCCESS, f"Module {slug} uninstalled successfully.")
+            return redirect('module_list')
     except Module.DoesNotExist:
         raise Http404("Module does not exist.")
 
 @login_required
-def module_upgrade(request, module_name):
+def module_upgrade(request, slug):
     try:
-        module = Module.objects.get(name=module_name)
+        module = Module.objects.get(slug=slug)
         if module.is_installed:
-            run_module_action(module_name, 'upgrade')
-            return HttpResponse(f"Module {module_name} upgraded successfully.")
-        return HttpResponse(f"Module {module_name} is not installed.")
+            run_module_action(module.name, 'upgrade')
+            messages.add_message(request, messages.SUCCESS, f"Module {slug} upgraded successfully.")
+            return redirect('module_list')
+        return HttpResponse(f"Module {slug} is not installed.")
     except Module.DoesNotExist:
         raise Http404("Module does not exist.")
