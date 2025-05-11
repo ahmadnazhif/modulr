@@ -7,3 +7,7 @@ register = template.Library()
 def can(user, permission_name):
     check_func = PERMISSION_MAP.get(permission_name)
     return check_func(user) if check_func else False
+
+@register.filter
+def get_attribute(obj, attr):
+    return getattr(obj, attr)

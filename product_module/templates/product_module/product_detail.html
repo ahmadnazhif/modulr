@@ -1,8 +1,14 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>{{ product.name }}</h1>
-<p>Barcode: {{ product.barcode }}</p>
-<p>Price: {{ product.price }}</p>
-<p>Stock: {{ product.stock }}</p>
+<a href="{% url 'product_list' %}">Back</a>
+<h1>{{ product }}</h1>
+
+<ul>
+  {% for label, value in fields %}
+    {% if label != 'ID' %}
+    <li><strong>{{ label }}:</strong> {{ value }}</li>
+    {% endif %}
+  {% endfor %}
+</ul>
 {% endblock %}
