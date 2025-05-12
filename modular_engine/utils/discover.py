@@ -5,7 +5,6 @@ from django.db import connections, DEFAULT_DB_ALIAS
 from django.db.migrations.loader import MigrationLoader
 
 def discover_modules():
-    # TODO create script to create new module and necessary files
     modules = []
     for app in settings.INSTALLED_APPS:
         if find_spec(f"{app}.install"):
