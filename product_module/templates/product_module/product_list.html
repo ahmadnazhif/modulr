@@ -37,7 +37,7 @@
     <p>You do not have permission to view this page.</p>
 {% endif %}
 
-{% if perms.product_module.add_product %}
+{% if request.user|can:'create_product' %}
     <a href="{% url 'product_create' %}" role="button">Add Product</a>
 {% endif %}
 {% endblock %}
