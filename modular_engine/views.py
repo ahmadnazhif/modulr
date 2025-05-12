@@ -10,7 +10,7 @@ from django.shortcuts import redirect
 
 
 def module_list(request):
-    modules = Module.objects.all()
+    modules = Module.objects.order_by('name')
     return render(request, 'modular_engine/module_list.html', {'modules': modules})
 
 @login_required

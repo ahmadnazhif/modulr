@@ -12,7 +12,7 @@
     </thead>
     <tbody>
         {% for module in modules %}
-        {% with module.slug|add:"_list" as template_list %}
+        {% with module.slug|add:"_landing_page" as template_list %}
         <tr>
             <td>{{ module.slug|capfirst }}</td>
             <td>{% if module.is_installed %}Installed{% else %}Not Installed{% endif %}</td>

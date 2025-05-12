@@ -29,7 +29,7 @@ def product_create(request):
         if form.is_valid():
             form.save()
             messages.add_message(request, messages.SUCCESS, f"Product created successfully.")
-            return redirect('product_list')
+            return redirect('product_landing_page')
     else:
         form = form_class()
     return render(request, 'product_module/product_form.html', {'form': form, 'user': request.user})
@@ -44,7 +44,7 @@ def product_update(request, id):
         if form.is_valid():
             form.save()
             messages.add_message(request, messages.SUCCESS, f"Product {product} updated successfully.")
-            return redirect('product_list')
+            return redirect('product_landing_page')
     else:
         form = form_class(instance=product)
     return render(request, 'product_module/product_form.html', {'form': form, 'user': request.user})
@@ -56,5 +56,5 @@ def product_delete(request, id):
     if request.method == 'POST':
         product.delete()
         messages.add_message(request, messages.SUCCESS, f"Product deleted successfully.")
-        return redirect('product_list')
+        return redirect('product_landing_page')
     return render(request, 'product_module/product_confirm_delete.html', {'product': product, 'user': request.user})
