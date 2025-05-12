@@ -15,7 +15,7 @@
         {% with module.slug|add:"_list" as template_list %}
         <tr>
             <td>{{ module.slug|capfirst }}</td>
-            <td>{% if module.is_installed %}Installed{% else %}Uninstalled{% endif %}</td>
+            <td>{% if module.is_installed %}Installed{% else %}Not Installed{% endif %}</td>
             <td style="text-align: right;">
                 {% if module.is_installed %}
                     <a href="{% url template_list %}" role="button">View</a>
