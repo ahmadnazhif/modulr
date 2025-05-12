@@ -1,6 +1,8 @@
 import importlib
+from django.conf import settings
 from django.shortcuts import render
 from django.http import Http404, HttpResponse
+from django.urls import Resolver404, resolve
 
 from modular_engine.module_runner import run_module_action
 from .models import Module
@@ -9,8 +11,22 @@ from django.contrib import messages
 from django.shortcuts import redirect
 
 
+def _has_landing_page(module_slug):
+    try:
+        resolve(f'/module/{module_slug}/')
+        return True
+    except Resolver404:
+        return False
+
 def module_list(request):
-    modules = Module.objects.order_by('name')
+    module_names = Module.objects.all()
+    included_ids = []
+
+    for module in module_names:
+        if module.name in settings.INSTALLED_APPS and _has_landing_page(module.slug):
+            included_ids.append(module.id)
+
+    modules = Module.objects.filter(id__in=included_ids).order_by('name')
     return render(request, 'modular_engine/module_list.html', {'modules': modules})
 
 @login_required
