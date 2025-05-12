@@ -1,0 +1,17 @@
+{% if messages %}
+  <div class="container">
+    {% for message in messages %}
+        {% if message.tags == 'success' %}
+            <article class="message" style="margin: 0; margin-bottom: 1rem; padding: 10px; border-left: 4px solid; background-color: #d1e7dd;">
+        {% elif message.tags == 'error'  or message.tags == 'danger' %}
+            <article class="message" style="margin: 0; margin-bottom: 1rem; padding: 10px; border-left: 4px solid; background-color: #f8d7da;">
+        {% elif message.tags == 'warning' %}
+            <article class="message" style="margin: 0; margin-bottom: 1rem; padding: 10px; border-left: 4px solid; background-color: #fff3cd;">
+        {% else %}
+            <article class="message" style="margin: 0; margin-bottom: 1rem; padding: 10px; border-left: 4px solid; background-color: #cfe2ff;">
+        {% endif %}
+            <p style="margin: 0; color: var(--background-color, black);">{{ message }}</p>
+        </article>
+    {% endfor %}
+  </div>
+{% endif %}

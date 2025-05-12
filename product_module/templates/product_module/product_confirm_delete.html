@@ -4,7 +4,7 @@
 <h1>Are you sure you want to delete {{ product.name }}?</h1>
 <form method="POST">
     {% csrf_token %}
-    <button type="submit">Yes, delete</button>
+    <button type="submit" class="pico-background-red">Yes, delete</button>
 </form>
-<a href="{% url 'product_list' %}">Cancel</a>
+<a href="{% url 'product_list' %}" role="button">Cancel</a>
 {% endblock %}

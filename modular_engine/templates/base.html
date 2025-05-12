@@ -2,34 +2,39 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>{% block title %}Modulr - Mdoular Based App{% endblock %}</title>
+    <title>{% block title %}Modulr - Modular Based App{% endblock %}</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
+    <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.colors.min.css"
+    >
 </head>
 <body>
-    <header>
+    <main class="container">
         <nav>
-            <a href="{% url 'module_list' %}">Home</a>
-            {% if user.is_authenticated %}
-                <span>Welcome, {{ user.username }}</span>
-                <form method="post" action="{% url 'logout' %}">
-                    {% csrf_token %}
-                    <button type="submit">Logout</button>
-                </form>
-
-            {% else %}
-                <a href="{% url 'login' %}"><button>Login</button></a>
-            {% endif %}
-        </nav>
-    </header>
-
-    <main>
-        {% block messages %}
-            {% if messages %}
             <ul>
-                {% for message in messages %}
-                <li{% if message.tags %}{% endif %}>{{ message }}</li>
-                {% endfor %}
+                <li><strong><a href="{% url 'module_list' %}">Modulr</a></strong></li>
             </ul>
-            {% endif %}
+            <ul>
+                {% if request.user.is_authenticated %}
+                <li>Hi, {{ request.user }}</li>
+                {% else %}
+                <li>Guest</li>
+                {% endif %}
+                {% if request.user.is_authenticated %}
+                <li>
+                    <form method="post" action="{% url 'logout' %}">
+                        {% csrf_token %}
+                        <button type="submit">Logout</button>
+                    </form>
+                </li>
+                {% else %}
+                <li><a href="{% url 'login' %}">Login</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+        {% block messages %}
+            {% include "components/messages.html" %}
         {% endblock %}
         {% block content %}{% endblock %}
     </main>

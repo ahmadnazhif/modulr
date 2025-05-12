@@ -3,13 +3,16 @@
 
 {% block content %}
 <h1>Product List</h1>
-
+{% if request.user|can:'read_product' %}
 <table>
     <thead>
         <tr>
             {% for field in model_fields %}
                 <th><strong>{{ field }}</strong></th>
             {% endfor %}
+            {% if request.user|can:'update_product' or request.user|can:'delete_product' %}
+            <th><strong>action</strong></th>
+            {% endif %}
         </tr>
     </thead>
     <tbody>
@@ -19,22 +22,22 @@
                 <td>{{ product|get_attribute:field }}</td>
             {% endfor %}
             <td>
-                {% if request.user|can:'read_product' %}
-                    <a href="{% url 'product_detail' product.id %}">View</a>
-                {% endif %}
                 {% if request.user|can:'update_product' %}
-                    | <a href="{% url 'product_update' product.id %}">Edit</a>
+                    <a href="{% url 'product_update' product.id %}" role="button" class="secondary">Edit</a>
                 {% endif %}
                 {% if request.user|can:'delete_product' %}
-                    | <a href="{% url 'product_delete' product.id %}">Delete</a>
+                    <a href="{% url 'product_delete' product.id %}" role="button" class="pico-background-red">Delete</a>
                 {% endif %}
             </td>
         </tr>
         {% endfor %}
     </tbody>
 </table>
+{% else %}
+    <p>You do not have permission to view this page.</p>
+{% endif %}
 
 {% if perms.product_module.add_product %}
-    <p><a href="{% url 'product_create' %}">Add Product</a></p>
+    <a href="{% url 'product_create' %}" role="button">Add Product</a>
 {% endif %}
 {% endblock %}
