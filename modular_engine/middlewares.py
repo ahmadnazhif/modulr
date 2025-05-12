@@ -1,4 +1,5 @@
 from django.http import Http404
+from django.shortcuts import render
 from modular_engine.models import Module
 
 class ModuleInstallMiddleware:
@@ -9,7 +10,9 @@ class ModuleInstallMiddleware:
         slug = self._extract_module_slug(request.path)
         module = self._get_module(slug) if slug else None
         if module and not module.is_installed:
-            raise Http404(f"Module '{slug}' is not installed.")
+            return render(request, 'errors/module_not_installed.html', {
+                'module': slug
+            }, status=403)
         
         response = self.get_response(request)
         return response

@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>Oops! This module isn’t installed.</h2>
+  <p>The module <strong>{{ module_name }}</strong> is not currently available.</p>
+  <a href="{% url 'module_list' %}" class="contrast">Back to Module Manager</a>
+{% endblock %}
