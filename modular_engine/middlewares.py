@@ -1,4 +1,3 @@
-from django.http import Http404
 from django.shortcuts import render
 from modular_engine.models import Module
 

@@ -1,4 +1,3 @@
-import importlib
 from django.conf import settings
 from django.shortcuts import render
 from django.http import Http404, HttpResponse
@@ -6,7 +5,7 @@ from django.urls import Resolver404, resolve
 
 from modular_engine.module_runner import run_module_action
 from .models import Module
-from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.shortcuts import redirect
 
